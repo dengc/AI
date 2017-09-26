@@ -75,11 +75,11 @@
 ### Hill-climbing
 
 ### Simulated annealing
-> 1.     首先便是初始化工作，设置初始温度（temperature）,获得一个随机的解决方案，并将其设置为当前解决方案（cur_sol）。
-2.     如果温度大于0，处理cur_sol（perturb处理，比如随机调换方案中步骤执行顺序等），得到新方案（new_sol）；如果温度小于0，结束算法。
-3.     比较当前方案和新方案的消耗（deltaE = cost(new_sol) – cost(cur_sol)）。
-4.     如果deltaE小于0则表明新方案比当前方案优秀，将新方案设置为当前方案，降温，则继续执行步骤2。
-5.     根据公式`p = exp(-detaE/T)`。计算p将其与以小于1的正随机数比较。如果p大于随机数，正将新方案设置为当前方案，降温继续执行步骤2；如果p小于随机数，则降温直接执行步骤2。
+> 1. 首先便是初始化工作，设置初始温度（temperature）,获得一个随机的解决方案，并将其设置为当前解决方案（cur_sol）。
+2. 如果温度大于0，处理cur_sol（perturb处理，比如随机调换方案中步骤执行顺序等），得到新方案（new_sol）；如果温度小于0，结束算法。
+3. 比较当前方案和新方案的消耗（deltaE = cost(new_sol) – cost(cur_sol)）。
+4. 如果deltaE小于0则表明新方案比当前方案优秀，将新方案设置为当前方案，降温，则继续执行步骤2。
+5. 根据公式`p = exp(-detaE/T)`。计算p将其与以小于1的正随机数比较。如果p大于随机数，正将新方案设置为当前方案，降温继续执行步骤2；如果p小于随机数，则降温直接执行步骤2。
 这个流程可以简单的理解：不断获取新方案，和当前比较，如果优于当前方案，取新方案为当前方案；如果劣于当前方案，则给予它一个机会成为当前方案，这个机会的概率取决于当前的温度和它与当前方案之间的差距。
 
 
@@ -126,3 +126,15 @@
 
 ### Local Search
 > min-conflicts heuristic: choose value that violates the fewest constraints == 移动violate最多的
+
+
+## Tips
+<hr>
+presentation (state): keep track of / coord
+
+The constraints restrict the domain 
+SA is optimal
+GA == tsp
+
+admissible heuristic: 自己想个标准:
+h(n) == missing numbers/ numbers of div need to be moved/ straight line/ manhattan
