@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class fruit {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input.txt");
+        File inFile = new File ("input1.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
@@ -41,12 +41,93 @@ public class fruit {
         String[][] newPos = new String[n][n];
         copyPos(pos, newPos, n);
 
-        dfs(pos, pos[7][6], 7, 6, n);
+        int preStar = getStars(newPos,n);
 
-        printArray(formatPos(pos, n), n);
-        // System.out.println(p);
-        // System.out.println(t);
-        //printList(sameType(pos, type, 0, 6, n));
+        // dfStars(pos, pos[2][2], 2, 2, n);
+
+        // printArray(formatPos(pos, n), n);
+
+        // int curStar = getStars(pos, n);
+        // int point = curStar - preStar;
+        // point = point * point;
+
+        // System.out.println(point);
+        //printList(sameType(pos, type, 7, 6, n));
+        //
+        Queue<String[][]> q = new LinkedList<String[][]>();
+        q = bfs(pos, n);
+        // while(!q.isEmpty()){
+        //     printArray(q.peek(),n);
+        //     q.remove();
+        // }
+        while(!q.isEmpty()){
+            Queue<String[][]> newQ = new LinkedList<String[][]>();
+            if(getStars(q.peek(), n) < n * n){
+                newQ = bfs(q.peek(),n);
+                for(String[][] item : newQ){
+                    q.add(item);
+                }
+                printArray(q.peek(), n);
+            }
+
+            q.remove();
+        }  
+    }
+
+    public static Queue<String[][]> bfs(String[][] pos, int n){
+
+        Queue<String[][]> q = new LinkedList<String[][]>();
+        Queue<String[][]> res = new LinkedList<String[][]>();
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                String[][] newPos = new String[n][n];
+                copyPos(pos, newPos, n);
+
+                if(!newPos[i][j].equals("*")){
+                 
+                    dfStars(newPos, newPos[i][j], i, j, n);
+                
+                    q.add(formatPos(newPos, n));
+                }
+                                                
+            }
+        }
+
+        res.add(q.poll());
+        while(!q.isEmpty()){
+            boolean flag = true;
+            for(String[][] ele : res){
+                if(Arrays.deepEquals(q.peek(), ele)){
+                    //res.add(q.poll());
+                    flag = false;
+                }
+            }
+            if(flag){
+                res.add(q.poll());
+            }else{
+                q.remove();
+            }
+        }
+
+        // for(String[][] ele : queueSet){
+        //     q.add(ele);
+        // }
+
+        return res;
+      
+    }
+
+    public static int getStars(String[][] pos, int n){
+        int point = 0;
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                if(pos[i][j].equals("*")){
+                    point++;
+                }
+            }
+        }
+        return point;
     }
 
     public static String[][] formatPos(String[][] pos, int n){
@@ -67,21 +148,20 @@ public class fruit {
         return pos;
     }
 
-    public static void dfs(String[][] pos, String fruit, int r, int c, int n){
+    public static void dfStars(String[][] pos, String fruit, int r, int c, int n){
         pos[r][c] = "*";
         ArrayList<Integer> res = sameType(pos, fruit, r, c, n);
         for(int i = 0; i < res.size(); i = i + 2){
             int rr = res.get(i);
             int cc = res.get(i+1);
-            dfs(pos, fruit, rr, cc, n);
-        }
+            dfStars(pos, fruit, rr, cc, n);
+        }        
     }
 
     public static ArrayList<Integer> sameType(String[][] pos, String fruit, int row, int col, int n){
         ArrayList<Integer> res = new ArrayList<Integer>();
 
         int i;
-        // String fruit = pos[row][col];
 
         //left
         i = col - 1;
