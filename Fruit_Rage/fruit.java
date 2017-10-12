@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class fruit {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input7.txt");
+        File inFile = new File ("input1.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
@@ -62,30 +62,57 @@ public class fruit {
         for(String[][] item : q){
             int curStar = getStars(item, n);
             int point = curStar - preStar;
-            qPoint.add(point * point);
+            point = point * point;
+            qPoint.add(point);
         }
 
-
+        Queue<Integer> realPoint = new LinkedList<Integer>();
+        int l = qPoint.size();
+        int count = 0;
+        boolean flag = true;
         while(!q.isEmpty()){
             Queue<String[][]> newQ = new LinkedList<String[][]>();
             preStar = getStars(q.peek(), n);
+            int curPoint = qPoint.peek();
+            realPoint.add(curPoint);
+            count++;
+            //System.out.println(count + "    "+ qPoint.size() +"    "+ l);
             if(preStar < n * n){
 
                 newQ = bfs(q.peek(),n);
                 for(String[][] item : newQ){
                     q.add(item);
                     int point = getStars(item, n) - preStar;
-                    qPoint.add(point * point);
+                    point = point * point;
+
+                    if(count > l){
+                        l = qPoint.size();
+                        flag = !flag;
+                        count = 0;
+                    }
+                    if(flag){
+                        point = curPoint - point;
+                    }else {
+                        point = curPoint + point;
+                    }
+                    //point = curPoint - point;
+                    qPoint.add(point);
                 }
-                printArray(q.peek(), n);
+                //printArray(q.peek(), n);
             }
 
             q.remove();
+            qPoint.remove();
+            //qPoint.add(curPoint);
         }  
 
-        // for(int point : qPoint){
-        //     System.out.println(point);
-        // }
+        for(int point : qPoint){
+            realPoint.add(point);
+        }
+
+        for(int point : realPoint){
+            System.out.println(point);
+        }
     }
 
     public static Queue<String[][]> bfs(String[][] pos, int n){
