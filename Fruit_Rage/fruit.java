@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class fruit {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input1.txt");
+        File inFile = new File ("input7.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
@@ -56,22 +56,36 @@ public class fruit {
         //
         Queue<String[][]> q = new LinkedList<String[][]>();
         q = bfs(pos, n);
-        // while(!q.isEmpty()){
-        //     printArray(q.peek(),n);
-        //     q.remove();
-        // }
+      
+        Queue<Integer> qPoint = new LinkedList<Integer>();
+
+        for(String[][] item : q){
+            int curStar = getStars(item, n);
+            int point = curStar - preStar;
+            qPoint.add(point * point);
+        }
+
+
         while(!q.isEmpty()){
             Queue<String[][]> newQ = new LinkedList<String[][]>();
-            if(getStars(q.peek(), n) < n * n){
+            preStar = getStars(q.peek(), n);
+            if(preStar < n * n){
+
                 newQ = bfs(q.peek(),n);
                 for(String[][] item : newQ){
                     q.add(item);
+                    int point = getStars(item, n) - preStar;
+                    qPoint.add(point * point);
                 }
                 printArray(q.peek(), n);
             }
 
             q.remove();
         }  
+
+        // for(int point : qPoint){
+        //     System.out.println(point);
+        // }
     }
 
     public static Queue<String[][]> bfs(String[][] pos, int n){
@@ -212,6 +226,4 @@ public class fruit {
             System.out.println(elem);
         }
     }
-
-
 }
