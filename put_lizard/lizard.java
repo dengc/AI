@@ -152,7 +152,12 @@ public class lizard {
                 }
             }
         }
-        failOutput(pWriter);
+        count = countOnes(pos, n);
+        if(count == p){
+            writeRes(n, pos, pWriter);
+        } else{
+            failOutput(pWriter);
+        }
     }
 
     //dfs search
@@ -235,7 +240,7 @@ public class lizard {
                 }
             }
         }
-            failOutput(pWriter);
+        failOutput(pWriter);
     }
 
     public static void copyPos(int[][] pos, int[][] newPos, int n){
