@@ -3,7 +3,7 @@
 
 import java.io.*;
 import java.util.*;
-public class fruit {
+public class homework {
     public static void main(String args[]) throws IOException {
         File inFile = new File ("input1.txt");
         Scanner sc = new Scanner (inFile);
@@ -70,6 +70,7 @@ public class fruit {
         int l = qPoint.size();
         int count = 0;
         boolean flag = true;
+        System.out.println("------");
         while(!q.isEmpty()){
             Queue<String[][]> newQ = new LinkedList<String[][]>();
             preStar = getStars(q.peek(), n);
@@ -89,6 +90,7 @@ public class fruit {
                         l = qPoint.size();
                         flag = !flag;
                         count = 0;
+                        System.out.println("------");
                     }
                     if(flag){
                         point = curPoint - point;
@@ -106,13 +108,14 @@ public class fruit {
             //qPoint.add(curPoint);
         }  
 
-        for(int point : qPoint){
-            realPoint.add(point);
-        }
+        //System.out.println(flag);
 
         for(int point : realPoint){
             System.out.println(point);
         }
+        System.out.println(flag);
+        System.out.println(l);
+
     }
 
     public static Queue<String[][]> bfs(String[][] pos, int n){
