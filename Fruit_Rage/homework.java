@@ -70,7 +70,7 @@ public class homework {
         int l = qPoint.size();
         int count = 0;
         boolean flag = true;
-        System.out.println("------");
+
         while(!q.isEmpty()){
             Queue<String[][]> newQ = new LinkedList<String[][]>();
             preStar = getStars(q.peek(), n);
@@ -90,7 +90,7 @@ public class homework {
                         l = qPoint.size();
                         flag = !flag;
                         count = 0;
-                        System.out.println("------");
+
                     }
                     if(flag){
                         point = curPoint - point;
@@ -100,7 +100,7 @@ public class homework {
                     //point = curPoint - point;
                     qPoint.add(point);
                 }
-                //printArray(q.peek(), n);
+                printArray(q.peek(), n);
             }
 
             q.remove();
@@ -113,8 +113,8 @@ public class homework {
         for(int point : realPoint){
             System.out.println(point);
         }
-        System.out.println(flag);
-        System.out.println(l);
+        // System.out.println(flag);
+        // System.out.println(l);
 
     }
 
@@ -255,5 +255,9 @@ public class homework {
         for(int elem : list){
             System.out.println(elem);
         }
+    }
+
+    public static int minimax(String[][] pos, int depth, boolean isMax, int alpha, int beta){
+        
     }
 }
