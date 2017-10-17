@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class homework {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input9.txt");
+        File inFile = new File ("input7.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
@@ -36,166 +36,111 @@ public class homework {
         }
         sc.close();
 
-        File outFile = new File ("output.txt");
-        FileWriter fWriter = new FileWriter (outFile);
-        PrintWriter pWriter = new PrintWriter (fWriter);
-      
-        int row = -1;
-        int col = -1;
-        int max = -1000;
-        int preStar = getStars(pos,n);
 
-        String[][] res = new String[n][n];
-        copyPos(pos, res, n);
-        boolean flag = true;
-
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                String[][] haha = new String[n][n];
-                copyPos(pos, haha, n);
-
-                if(!haha[i][j].equals("*")){
-                    dfStars(haha, haha[i][j], i, j, n);
-                    haha = formatPos(haha, n);
-                    int curStar = getStars(haha,n);
-                    int val = curStar - preStar;
-                    val = val * val;
-                    if(val > max && val >= getMax(haha,n)){
-                        max = val;
-                        row = i;
-                        col = j;
-                        flag = false;
-                    }
-                }
-            }
-        }
-        if(flag){
-            for(int i = 0; i < n && flag; i++){
-                for(int j = 0; j < n; j++){
-                    if(!res[i][j].equals("*")){
-                        row = i;
-                        col = j;
-                        flag = false;
-                        break;
-
-                    }
-                }
-            }
-        }        
-        dfStars(res, res[row][col], row, col, n);
-        res = formatPos(res, n);
-
-        row++;
-        col++;
-        System.out.print(getCol(col));
-        System.out.println(row);
-        printArray(res, n);
-
-        writeRes(n, res, pWriter, col, row);
         
-    }
+        String[][] newPos = new String[n][n];
+        copyPos(pos, newPos, n);
 
-    public static int getMax(String[][] pos, int n){
-        int max = -1000;
-        int preStar = getStars(pos,n);
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                String[][] haha = new String[n][n];
-                copyPos(pos, haha, n);
+        int preStar = getStars(newPos,n);
 
-                if(!haha[i][j].equals("*")){
-                    dfStars(haha, haha[i][j], i, j, n);
-                    haha = formatPos(haha, n);
-                    int curStar = getStars(haha,n);
-                
-                    int val = curStar - preStar;
-                    val = val * val;
-                    if(val >= max){
-                        max = val;
-                    }
-                }
-            }
-        }
-        return max;
-    }
+        // dfStars(pos, pos[2][2], 2, 2, n);
 
-    public static String getCol(int col){
-        if(col == 1){
-            return "A";
+        // printArray(formatPos(pos, n), n);
+
+        // int curStar = getStars(pos, n);
+        // int point = curStar - preStar;
+        // point = point * point;
+
+        // System.out.println(point);
+        //printList(sameType(pos, type, 7, 6, n));
+        
+
+        // func()
+        // Queue<String[][]> q = new LinkedList<String[][]>();
+        // q = bfs(newPos, n);
+      
+        // Queue<Integer> qPoint = new LinkedList<Integer>();
+
+        // for(String[][] item : q){
+        //     int curStar = getStars(item, n);
+        //     int point = curStar - preStar;
+        //     point = point * point;
+        //     qPoint.add(point);
+        // }
+
+        // ArrayList<Integer> realPoint = new ArrayList<Integer>();
+        // int l = qPoint.size();
+        // int count = 0;
+        // boolean flag = true;
+
+        // while(!q.isEmpty()){
+        //     Queue<String[][]> newQ = new LinkedList<String[][]>();
+        //     preStar = getStars(q.peek(), n);
+        //     int curPoint = qPoint.peek();
+        //     realPoint.add(curPoint);
+        //     count++;
+        //     //System.out.println(count + "    "+ qPoint.size() +"    "+ l);
+        //     if(preStar < n * n){
+
+        //         newQ = bfs(q.peek(),n);
+        //         for(String[][] item : newQ){
+        //             q.add(item);
+        //             int point = getStars(item, n) - preStar;
+        //             point = point * point;
+
+        //             if(count > l){
+        //                 l = qPoint.size();
+        //                 flag = !flag;
+        //                 count = 0;
+        //             }
+        //             if(flag){
+        //                 point = curPoint - point;
+        //             }else {
+        //                 point = curPoint + point;
+        //             }
+        //             //point = curPoint - point;
+        //             qPoint.add(point);
+        //         }
+        //         //printArray(q.peek(), n);
+        //     }
+
+        //     q.remove();
+        //     qPoint.remove();
+        //     //qPoint.add(curPoint);
+        // }  
+
+        ArrayList<Integer> realPoint = new ArrayList<Integer>();
+        realPoint = getPoints(newPos, n, preStar);
+
+        // for(int point : realPoint){
+        //     System.out.println(point);
+        // }
+     
+
+
+        String[][] posFindScore = new String[n][n];
+        copyPos(pos, posFindScore, n);
+
+        int score = minimax(posFindScore, 0, true, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint);
+        System.out.println(score);
+
+        Queue<String[][]> q = new LinkedList<String[][]>();
+        q = bfs(pos, n);
+        for(String[][] item : q){
+            printArray(item, n);
+            String[][] newScore = new String[n][n];
+            copyPos(item, newScore, n);
+
+            preStar = getStars(newScore,n);
+            realPoint = getPoints(newScore, n, preStar);
+            System.out.println(realPoint.toString());
+            System.out.println(minimax(item, 2, true, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint));
+            // if(minimax(item, 1, false, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint) == score){
+            //     printArray(item, n);
+            //     break;
+            // }
         }
-        if(col == 2){
-            return "B";
-        }
-        if(col == 3){
-            return "C";
-        }
-        if(col == 4){
-            return "D";
-        }
-        if(col == 5){
-            return "E";
-        }
-        if(col == 6){
-            return "F";
-        }
-        if(col == 7){
-            return "G";
-        }
-        if(col == 8){
-            return "H";
-        }
-        if(col == 9){
-            return "I";
-        }
-        if(col == 10){
-            return "J";
-        }
-        if(col == 11){
-            return "K";
-        }
-        if(col == 12){
-            return "L";
-        }
-        if(col == 13){
-            return "M";
-        }
-        if(col == 14){
-            return "N";
-        }
-        if(col == 15){
-            return "O";
-        }
-        if(col == 16){
-            return "P";
-        }
-        if(col == 17){
-            return "Q";
-        }
-        if(col == 18){
-            return "R";
-        }
-        if(col == 19){
-            return "S";
-        }
-        if(col == 20){
-            return "T";
-        }
-        if(col == 21){
-            return "U";
-        }
-        if(col == 22){
-            return "V";
-        }
-        if(col == 23){
-            return "W";
-        }
-        if(col == 24){
-            return "X";
-        }
-        if(col == 25){
-            return "Y";
-        }
-        return "Z";
+
     }
 
     public static ArrayList<Integer> getPoints(String[][] pos, int n, int preStar){
@@ -385,7 +330,7 @@ public class homework {
     }
 
     public static int minimax(String[][] pos, int depth, boolean isMax, int alpha, int beta, int n, int index, ArrayList<Integer> realPoint){
-        if(depth == 2){
+        if(depth == 3){
             // System.out.println("i: " + index);
             return realPoint.get(index);
         }
@@ -417,20 +362,5 @@ public class homework {
             }
             return bestVal;
         }
-    }
-
-    public static void writeRes(int n, String[][] pos, PrintWriter pWriter, int col, int row){
-        pWriter.print(getCol(col));
-        pWriter.println(row);
-
-        for(int i = 0; i<n; i++){
-            for(int j = 0; j<n; j++){
-                pWriter.print(pos[i][j]);
-            }
-            if(i != n - 1){
-                pWriter.println();
-            }
-        }
-        pWriter.close();
     }
 }
