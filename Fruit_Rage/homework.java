@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class homework {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input.txt");
+        File inFile = new File ("input11.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
@@ -87,8 +87,8 @@ public class homework {
 
         row++;
         col++;
-        // System.out.print(getCol(col));
-        // System.out.println(row);
+        System.out.print(getCol(col));
+        System.out.println(row);
         printArray(res, n);
 
         writeRes(n, res, pWriter, col, row);
