@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class homework {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input1.txt");
+        File inFile = new File ("input8.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
@@ -53,7 +53,97 @@ public class homework {
 
         // System.out.println(point);
         //printList(sameType(pos, type, 7, 6, n));
-        //
+        
+
+        // func()
+        // Queue<String[][]> q = new LinkedList<String[][]>();
+        // q = bfs(newPos, n);
+      
+        // Queue<Integer> qPoint = new LinkedList<Integer>();
+
+        // for(String[][] item : q){
+        //     int curStar = getStars(item, n);
+        //     int point = curStar - preStar;
+        //     point = point * point;
+        //     qPoint.add(point);
+        // }
+
+        // ArrayList<Integer> realPoint = new ArrayList<Integer>();
+        // int l = qPoint.size();
+        // int count = 0;
+        // boolean flag = true;
+
+        // while(!q.isEmpty()){
+        //     Queue<String[][]> newQ = new LinkedList<String[][]>();
+        //     preStar = getStars(q.peek(), n);
+        //     int curPoint = qPoint.peek();
+        //     realPoint.add(curPoint);
+        //     count++;
+        //     //System.out.println(count + "    "+ qPoint.size() +"    "+ l);
+        //     if(preStar < n * n){
+
+        //         newQ = bfs(q.peek(),n);
+        //         for(String[][] item : newQ){
+        //             q.add(item);
+        //             int point = getStars(item, n) - preStar;
+        //             point = point * point;
+
+        //             if(count > l){
+        //                 l = qPoint.size();
+        //                 flag = !flag;
+        //                 count = 0;
+        //             }
+        //             if(flag){
+        //                 point = curPoint - point;
+        //             }else {
+        //                 point = curPoint + point;
+        //             }
+        //             //point = curPoint - point;
+        //             qPoint.add(point);
+        //         }
+        //         //printArray(q.peek(), n);
+        //     }
+
+        //     q.remove();
+        //     qPoint.remove();
+        //     //qPoint.add(curPoint);
+        // }  
+
+        ArrayList<Integer> realPoint = new ArrayList<Integer>();
+        realPoint = getPoints(newPos, n, preStar);
+
+        // for(int point : realPoint){
+        //     System.out.println(point);
+        // }
+     
+
+
+        String[][] posFindScore = new String[n][n];
+        copyPos(pos, posFindScore, n);
+
+        int score = minimax(posFindScore, 0, true, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint);
+        System.out.println(score);
+
+        // Queue<String[][]> q = new LinkedList<String[][]>();
+        // q = bfs(pos, n);
+        // for(String[][] item : q){
+        //     printArray(item, n);
+        //     String[][] newScore = new String[n][n];
+        //     copyPos(item, newScore, n);
+
+        //     preStar = getStars(newScore,n);
+        //     //realPoint = getPoints(newScore, n, preStar);
+        //     //System.out.println(realPoint.toString());
+        //     // System.out.println(minimax(item, 1, true, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint));
+        //     if(minimax(item, 1, false, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint) == score){
+        //         printArray(item, n);
+        //         break;
+        //     }
+        // }
+
+    }
+
+    public static ArrayList<Integer> getPoints(String[][] pos, int n, int preStar){
         Queue<String[][]> q = new LinkedList<String[][]>();
         q = bfs(pos, n);
       
@@ -66,7 +156,7 @@ public class homework {
             qPoint.add(point);
         }
 
-        Queue<Integer> realPoint = new LinkedList<Integer>();
+        ArrayList<Integer> realPoint = new ArrayList<Integer>();
         int l = qPoint.size();
         int count = 0;
         boolean flag = true;
@@ -77,7 +167,7 @@ public class homework {
             int curPoint = qPoint.peek();
             realPoint.add(curPoint);
             count++;
-            //System.out.println(count + "    "+ qPoint.size() +"    "+ l);
+            
             if(preStar < n * n){
 
                 newQ = bfs(q.peek(),n);
@@ -90,7 +180,6 @@ public class homework {
                         l = qPoint.size();
                         flag = !flag;
                         count = 0;
-
                     }
                     if(flag){
                         point = curPoint - point;
@@ -100,22 +189,14 @@ public class homework {
                     //point = curPoint - point;
                     qPoint.add(point);
                 }
-                printArray(q.peek(), n);
+                //printArray(q.peek(), n);
             }
 
             q.remove();
             qPoint.remove();
-            //qPoint.add(curPoint);
+            
         }  
-
-        //System.out.println(flag);
-
-        for(int point : realPoint){
-            System.out.println(point);
-        }
-        // System.out.println(flag);
-        // System.out.println(l);
-
+        return realPoint;
     }
 
     public static Queue<String[][]> bfs(String[][] pos, int n){
@@ -257,7 +338,38 @@ public class homework {
         }
     }
 
-    public static int minimax(String[][] pos, int depth, boolean isMax, int alpha, int beta){
-        
+    public static int minimax(String[][] pos, int depth, boolean isMax, int alpha, int beta, int n, int index, ArrayList<Integer> realPoint){
+        if(depth == 3){
+            // System.out.println("i: " + index);
+            return realPoint.get(index);
+        }
+
+        int bestVal = 0;
+        Queue<String[][]> q = new LinkedList<String[][]>();
+        q = bfs(pos, n);
+
+        if(isMax){
+            bestVal = Integer.MIN_VALUE;
+            for(String[][] item : q){
+                int value = minimax(pos, depth + 1, true, alpha, beta, n, index + 1 + q.size(), realPoint);
+                bestVal = Math.max(bestVal, value);
+                alpha = Math.max(alpha, bestVal);
+                if(beta <= alpha){
+                    break;
+                }
+            }
+            return bestVal;
+        }else{
+            bestVal = Integer.MAX_VALUE;
+            for(String[][] item : q){
+                int value = minimax(pos, depth + 1, true, alpha, beta, n, index + 1 + q.size(), realPoint);
+                bestVal = Math.min(bestVal, value);
+                beta = Math.min(beta, bestVal);
+                if(beta <= alpha){
+                    break;
+                }
+            }
+            return bestVal;
+        }
     }
 }
