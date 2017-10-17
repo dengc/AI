@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class homework {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input8.txt");
+        File inFile = new File ("input7.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
@@ -124,22 +124,22 @@ public class homework {
         int score = minimax(posFindScore, 0, true, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint);
         System.out.println(score);
 
-        // Queue<String[][]> q = new LinkedList<String[][]>();
-        // q = bfs(pos, n);
-        // for(String[][] item : q){
-        //     printArray(item, n);
-        //     String[][] newScore = new String[n][n];
-        //     copyPos(item, newScore, n);
+        Queue<String[][]> q = new LinkedList<String[][]>();
+        q = bfs(pos, n);
+        for(String[][] item : q){
+            printArray(item, n);
+            String[][] newScore = new String[n][n];
+            copyPos(item, newScore, n);
 
-        //     preStar = getStars(newScore,n);
-        //     //realPoint = getPoints(newScore, n, preStar);
-        //     //System.out.println(realPoint.toString());
-        //     // System.out.println(minimax(item, 1, true, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint));
-        //     if(minimax(item, 1, false, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint) == score){
-        //         printArray(item, n);
-        //         break;
-        //     }
-        // }
+            preStar = getStars(newScore,n);
+            realPoint = getPoints(newScore, n, preStar);
+            System.out.println(realPoint.toString());
+            System.out.println(minimax(item, 2, true, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint));
+            // if(minimax(item, 1, false, Integer.MIN_VALUE, Integer.MAX_VALUE, n, 0, realPoint) == score){
+            //     printArray(item, n);
+            //     break;
+            // }
+        }
 
     }
 
@@ -160,6 +160,7 @@ public class homework {
         int l = qPoint.size();
         int count = 0;
         boolean flag = true;
+        int flagCount = 0;
 
         while(!q.isEmpty()){
             Queue<String[][]> newQ = new LinkedList<String[][]>();
@@ -169,7 +170,6 @@ public class homework {
             count++;
             
             if(preStar < n * n){
-
                 newQ = bfs(q.peek(),n);
                 for(String[][] item : newQ){
                     q.add(item);
@@ -180,21 +180,22 @@ public class homework {
                         l = qPoint.size();
                         flag = !flag;
                         count = 0;
+                        flagCount++;
                     }
                     if(flag){
                         point = curPoint - point;
                     }else {
                         point = curPoint + point;
                     }
-                    //point = curPoint - point;
                     qPoint.add(point);
                 }
-                //printArray(q.peek(), n);
+            }
+            if(flagCount == 3){
+                break;
             }
 
             q.remove();
             qPoint.remove();
-            
         }  
         return realPoint;
     }
@@ -210,12 +211,9 @@ public class homework {
                 copyPos(pos, newPos, n);
 
                 if(!newPos[i][j].equals("*")){
-                 
                     dfStars(newPos, newPos[i][j], i, j, n);
-                
                     q.add(formatPos(newPos, n));
                 }
-                                                
             }
         }
 
@@ -224,7 +222,6 @@ public class homework {
             boolean flag = true;
             for(String[][] ele : res){
                 if(Arrays.deepEquals(q.peek(), ele)){
-                    //res.add(q.poll());
                     flag = false;
                 }
             }
@@ -234,13 +231,7 @@ public class homework {
                 q.remove();
             }
         }
-
-        // for(String[][] ele : queueSet){
-        //     q.add(ele);
-        // }
-
         return res;
-      
     }
 
     public static int getStars(String[][] pos, int n){
