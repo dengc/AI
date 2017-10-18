@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 public class homework {
     public static void main(String args[]) throws IOException {
-        File inFile = new File ("input11.txt");
+        File inFile = new File ("input13.txt");
         Scanner sc = new Scanner (inFile);
 
         //scan first 3 lines
