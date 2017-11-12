@@ -6,7 +6,7 @@ import java.util.*;
 public class homework {
     public static void main(String args[]) throws IOException {
 
-        File inFile = new File ("input6.txt");
+        File inFile = new File ("input4.txt");
         Scanner sc = new Scanner (inFile);
 
         int n = 0;
@@ -36,7 +36,7 @@ public class homework {
             line = sc.nextLine();
             if(line.indexOf("|") < 0){
                 String sub = line.substring(line.indexOf("("), line.indexOf(")"));
-                if(containsUpper(sub)){
+                if(containsUpper(sub) || countComma(sub) == 0){
                     qConstant.add(line);
                 }else {
                     knowledge.add(line);
@@ -105,29 +105,47 @@ public class homework {
             knowledge = new ArrayList<String>();
             knowledge.add(reso);
             knowledgeList.add(knowledge);
+            qConstant.add(reso);
         }
 
-        print(knowledgeList.toString());
+        // print(knowledgeList.toString());
         
         // System.out.println(knowledgeList.size());
 
         Set<String> set = new HashSet<String>();
         for(int i = 0; i < knowledgeList.size(); i++){
-            set.add(knowledgeList.get(i).get(0));
+            if(knowledgeList.get(i).size() == 1){
+                set.add(knowledgeList.get(i).get(0));
+            }
         }
 
-        // print(set.toString());
+        print(set.toString());
 
         // System.out.println(set.size());
 
-        // for(int i = 0; i < n; i++){
-        //     if(set.contains(getReverse(checkList.get(i)))){
-        //         print("FALSE");
-        //     }
-        //     else{
-        //         print("TRUE");
-        //     }
-        // }
+        for(int i = 0; i < n; i++){
+            String check = checkList.get(i);
+            String funcReso = check.substring(0, check.indexOf("("));
+
+            if(set.contains(check)){
+                print("TRUE");
+            }
+            else{
+                boolean right = false;
+                for(String s : set){
+                    String sub = s.substring(s.indexOf("(") + 1, s.indexOf(")"));
+                    String sFunc = s.substring(0, s.indexOf("("));
+                    if(sFunc.equals(funcReso) && !containsUpper(sub)){
+                        right = true;
+                        print("TRUE");
+                    }
+                }
+                if(!right){
+                    print("FALSE");
+                }
+                
+            }
+        }
 
         // File outFile = new File ("output.txt");
         // FileWriter fWriter = new FileWriter (outFile);
