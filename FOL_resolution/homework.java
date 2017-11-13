@@ -6,7 +6,7 @@ import java.util.*;
 public class homework {
     public static void main(String args[]) throws IOException {
 
-        File inFile = new File ("input4.txt");
+        File inFile = new File ("input.txt");
         Scanner sc = new Scanner (inFile);
 
         int n = 0;
@@ -119,16 +119,24 @@ public class homework {
             }
         }
 
-        print(set.toString());
+        // print(set.toString());
 
         // System.out.println(set.size());
+        
+        File outFile = new File ("output.txt");
+        FileWriter fWriter = new FileWriter (outFile);
+        PrintWriter pWriter = new PrintWriter (fWriter);
 
         for(int i = 0; i < n; i++){
             String check = checkList.get(i);
             String funcReso = check.substring(0, check.indexOf("("));
 
             if(set.contains(check)){
-                print("TRUE");
+                if(i == n-1){
+                    pWriter.print("TRUE");
+                }else{
+                    pWriter.println("TRUE");
+                }
             }
             else{
                 boolean right = false;
@@ -137,19 +145,23 @@ public class homework {
                     String sFunc = s.substring(0, s.indexOf("("));
                     if(sFunc.equals(funcReso) && !containsUpper(sub)){
                         right = true;
-                        print("TRUE");
+                        if(i == n-1){
+                            pWriter.print("TRUE");
+                        }else{
+                            pWriter.println("TRUE");
+                        }
                     }
                 }
                 if(!right){
-                    print("FALSE");
+                    if(i == n-1){
+                        pWriter.print("FALSE");
+                    }else{
+                        pWriter.println("FALSE");
+                    }
                 }
-                
             }
         }
-
-        // File outFile = new File ("output.txt");
-        // FileWriter fWriter = new FileWriter (outFile);
-        // PrintWriter pWriter = new PrintWriter (fWriter);
+        pWriter.close();
     }
 
     public static ArrayList<String> getReso(ArrayList<String> knowledge, String s, int i){
