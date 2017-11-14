@@ -21,7 +21,6 @@ public class homework {
             checkList.add(line);
             checkAmount++;
         }
-        // printList(checkList);
 
         int p = 0;
         if(sc.hasNextLine()){
@@ -53,14 +52,9 @@ public class homework {
                 knowledgeList.add(knowledge);
             }
             
-            // System.out.println(knowledge.size());
-
             knowledge = new ArrayList<String>();
 
         }
-        // System.out.println(knowledgeList.toString());
-        // System.out.println(qConstant.toString());
-
         sc.close();
 
         int count = 100;
@@ -97,9 +91,6 @@ public class homework {
                 }
             }
             count--;
-            // for(int i = 0; i < knowledgeList.size(); i++){
-            //     if(knowledge.get(i).size() == 1)
-            // }
             
             reso = getReverse(reso);
             knowledge = new ArrayList<String>();
