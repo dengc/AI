@@ -262,3 +262,53 @@ and: min
 - Generalized Modus Ponens is a sound inference rule, not complete, horn form
 - POP is sound, complete, and systematic
 - Algorithms exist that return YES to every entailed sentence, but no algorithm exists that also returns NO to every nonentailed sentence
+
+
+## Bayesian
+-----------------------------------
+Independent: P(a,b)=P(a) * p(b)
+p(a|b) * p(b) = p(b|a) * p(a)
+p(d|a) = p(b|a) * p(d|b)
+
+- P(B | H+, L-, E+) 
+= αP(B, H+, L-, E+) 
+= α(P(B, H+, L-, Q+, E+) + P(B, H+, L-, Q-, E+))
+= α(<P(B+) P(H+) P(L- | H+) P(Q+ | B+, H+, L-) P(E+ | Q+),
+P(B-) P(H+) P(L- | H+) P(Q+ | B-, H+, L-) P(E+ | Q+)> + <P(B+) P(H+) P(L- | H+) P(Q- | B+, H+, L-) P(E+ | Q-), P(B-) P(H+) P(L- | H+) P(Q- | B-, H+, L-) P(E+ | Q-)>)
+
+- P(a|b,c)
+= P(a,b,c) / P(b,c)
+
+
+## Machine Learning
+-----------------------------------
+### Decision Tree
+Information Gain = 总Entropy - (n/m * 此entropy + m-n/m * 此entropy)
+split on first: which has highest information gain
+
+### Neural Networks
+network output: 正为1，负为0
+number of weights w/bias: (input + 1 )* hidden + (hidden + 1) * output
+number of weights without bias: 不加1
+
+### Candidate Elimination
+negative example & true negative: 找 S 反例
+positive example & true positive: 找 G 正例
+negative example & false positive： 找 全 正例
+positive example & false negative： 找 全 反例
+
+
+## Reinforcement Learning
+-----------------------------------
+V = 最大γ 乘积和周围所有比较 (可能加一个reward action的值)
+循环的话：V = pγR + (1-p)γV
+
+
+## 判断题：
+- Bayesian network cover every boolean functions
+- Naive Bayes is not a linear classifier
+- A single perceptron (finite number training steps) cannot compute the XOR function
+- supervised learning is labeled
+- reinforcement learning: we do not need to know the transition probabilities before we start, not know the utility function
+- NPL: Cocke-Younger-Kasami
+- incremental strategy: most vars are 0
