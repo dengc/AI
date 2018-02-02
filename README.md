@@ -27,7 +27,6 @@
 
 
 ### Intelligent Agent
-![ntelligent Agent.png](./Intelligent Agent.png)
 
 
 ## Uninformed  Search
@@ -63,13 +62,10 @@
 > 评价函数f(n), 选择最小的f(n)
     > - f(n) = h(n), h(n) -> estimate of cost from n to goal
     > - 距离的话，为n到goal的 straight-line distance  
-![Alt text](./Screen Shot 2017-09-24 at 4.46.14 PM.png)
-
 
 #### A*
 > f(n) = g(n) + h(n)，g(n) 为从起点到n的已消耗距离
     > - if admissible, h(n) <= h*(n) where h*(n) is the true cost from n. （预测不可能大于真实情况）
-![Alt text](./Screen Shot 2017-09-24 at 4.46.26 PM.png)
 
 
 ### Hill-climbing
